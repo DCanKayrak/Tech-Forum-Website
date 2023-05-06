@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+{{user.username}}
+{% endblock %}
+    
+{% block content %}
+
+<div class="container">
+    <div class="bg-dark text-light mt-5 rounded p-3">
+        <div class="row text-center">
+            <div class="col-3">
+                <span style="font-size: 5rem;" class="icon-user-circle"></span>
+                <h5 class="align-middle">{{user.username}}</h5>
+            </div>
+            <div class="col-9">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

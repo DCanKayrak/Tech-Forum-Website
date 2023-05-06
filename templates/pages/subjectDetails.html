@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+{{topic.title}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container bg-dark text-light rounded mb-3">
+    <!--Title-->
+    <hr class="mt-5">
+    <div class="d-flex justify-content-start">
+        {% if topic.titlePrefix == 'Yardım'%}
+        <h4> <span class="badge bg-danger">Yardım</span>{{topic.title}}</h4>
+        {% else %}
+        <h4> <span class="badge bg-info">Öneri</span>{{topic.title}}</h4>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <p style="font-size: 0.8rem" class="text-secondary"><span class="icon-user-circle"></span>
+                {{topic.author}} - <span style="font-size: 0.8rem" class="icon-time"></span>
+                {{topic.LastUpdate|naturaltime}} - {{commentCounter}} Yanıt</p>
+        </div>
+        {% if user.username == topic.author %}
+        <form action="" method="DELETE">
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-danger">Sil</button>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+<!--Pagination-->
+<div class="container pagination">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link bg-dark text-light" href="#">Önceki</a></li>
+            <li class="page-item"><a class="page-link bg-dark text-light" href="#">1</a></li>
+            <li class="page-item"><a class="page-link bg-dark text-light" href="#">2</a></li>
+            <li class="page-item"><a class="page-link bg-dark text-light" href="#">3</a></li>
+            <li class="page-item"><a class="page-link bg-dark text-light" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+<!--Content-->
+<div class="container rounded">
+    <!--Post&Comment-->
+    <div class="row">
+        <div class="col-10 text-light">
+            <div class="rounded p-3 bg-dark">
+                <p class="text-secondary mt-1">{{topic.LastUpdate|naturaltime}}</p>
+                <p class="mt-1">{{topic.subject|safe}}</p>
+            </div>
+            <!-- NEW Comment-->
+        </div>
+        <div class="col-2 bg-dark p-3 rounded text-light">
+            <p class="mt-3"><span class="icon-chat-bubble-dots"></span> Son Konular</p>
+            <hr>
+            {% for topic in topics%}
+            <div>
+                {{topic.title}}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% for comment in comments %}
+    <div class="row">
+        <div class="col-10 text-light mb-5">
+            <div class="rounded p-3 bg-dark">
+                
+                    <p>{{comment.user.username}} - {{comment.time|naturaltime}}</p>
+                    <p>{{comment.message|safe}}</p>
+                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-10 text-light">
+            <div class="rounded p-3 bg-dark">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <textarea class="ckeditor" name="editor" required></textarea>
+                        <br>
+                        <button class="btn btn-success flex-right" type="submit">Cevap Yaz!</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    {% endblock %}

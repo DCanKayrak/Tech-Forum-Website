@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+    {{category.name}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="bg-dark text-white mt-5 p-3">
+        <h3>{{category.name}}</h3>
+        <hr>
+        {% for topic in topics %}
+        <div class="container subject-container">
+            <div class="row mt-3 mb-3">
+              <div class="col-1 mt-4"><span style="font-size: 48px;" class="icon-user-circle"></span></div>
+              <div class="col-11">
+                {% if topic.titlePrefix == 'Öneri' %}
+              <div class="badge bg-info">{{topic.titlePrefix}}</div>
+              {% else %}
+              <div class="badge bg-danger">{{topic.titlePrefix}}</div>
+              {% endif %}
+              <a href="konu/{{topic.slug}}">{{topic.title}}</a>
+                <p>Konu hakkında açıklamaların devamı</p>
+                <p style="font-size: 10px;" class="">{{topic.LastUpdate|naturaltime}}</p>
+              </div>
+            </div>
+            <hr>
+          </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

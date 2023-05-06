@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+{% csrf_token %}
+
+{% block title %}
+Yeni Konu
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container m-5">
+    <div class="text-bg-dark p-3 mb-3">Yeni Konu</div>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="titlePrefixLabel">Başlık Ön Eki :</label>
+            <select name="titlePrefix" id="titlePrefix" required>
+                <option value="Öneri">Öneri</option>
+                <option value="Yardım">Yardım</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="title">Başlık :</label>
+            <input class="mb-2" type="text" name="title" placeholder="Konu Başlığı" required />
+        </div>
+        <div class="form-group mb-3">
+            <label for="category">Kategori :</label>
+            <select name="category" id="categoryPicker" required>
+                {% for category in categories %}
+                <option value="{{category.name}}">{{category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <textarea name="editor" id="ckeditor" required></textarea>
+            <br>
+            <button class="btn btn-success" type="submit">Yeni Konu Aç</button>
+        </div>
+    </form>
+</div>
+{% else %}
+<div class="container">
+    <div class="col-md-4 mx-auto mt-5">
+        <h4 class="mx-auto">Devam Etmek İçin Lütfen Giriş Yapınız</h4>
+        <a class="m-3" href="/login">
+            <button class="btn btn-warning">Giriş Yap</button>
+        </a>
+        <a class="m-3" href="/register">
+            <button class="btn btn-warning">Kayıt Ol!</button>
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
