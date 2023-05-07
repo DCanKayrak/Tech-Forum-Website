@@ -72,9 +72,16 @@ Anasayfa
             <td>
               {% if topic.titlePrefix == 'Öneri' %}
               <div class="badge bg-info">{{topic.titlePrefix}}</div>
-              {% else %}
+              {% endif %}
+              {% if topic.titlePrefix == 'Yardım' %}
               <div class="badge bg-danger">{{topic.titlePrefix}}</div>
               {% endif %}
+
+              {% if topic.titlePrefix == 'Kurallar' %}
+              <div class="badge bg-warning">{{topic.titlePrefix}}</div>
+              {% endif %}
+
+
               <a href="konu/{{topic.slug}}">{{topic.title}}</a>
             </td>
             <td>{{topic.category}}</td>

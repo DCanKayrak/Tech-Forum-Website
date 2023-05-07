@@ -34,11 +34,23 @@ class Topic(models.Model):
     viewCounter = models.IntegerField(default=0)
     LastUpdate = models.DateTimeField(default=datetime.now)
     author = models.CharField(max_length=50)
+    is_commentable = models.BooleanField(default=True)
     slug = models.SlugField(null=False,blank=True,unique=True,db_index=True,editable=False)
 
-    def save(self,*args,**kwargs):
-        self.slug = slugify(self.title)
-        super().save(*args,**kwargs)
+    def _get_unique_slug(self):
+        slug = slugify(self.title)
+        unique_slug = slug
+        num = 1
+        while Topic.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
 
     def __str__(self) -> str:
         return self.title

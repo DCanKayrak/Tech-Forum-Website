@@ -4,6 +4,7 @@ from django.template import loader
 from user.views import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from .core.MailService import sendMail
 
 # Create your views here.
 def index(request):
@@ -60,6 +61,7 @@ def subjectDetails(request,slug):
     comments = Comment.objects.filter(topic_id=currentTopic.id)
     topics = Topic.objects.order_by('LastUpdate').reverse()
 
+    #Making comments
     if request.method == 'POST':
         message = request.POST['editor']
         user = request.user
@@ -69,6 +71,11 @@ def subjectDetails(request,slug):
         comment.save()
         currentTopic.LastUpdate = datetime.now()
         currentTopic.save()
+
+
+        author = User.objects.get(username=currentTopic.author)
+
+        #sendMail(to=author.email,msg=currentTopic.title)
         return redirect("/konu/"+slug) 
     
 
@@ -99,11 +106,31 @@ def getCategory(request,slug):
 
     return HttpResponse(template.render(context, request))
 
-def search(request,q):
-    topics = Topic.objects.all()
+def search(request):
+    
+    q = request.GET['q']
+    topics = Topic.objects.filter(title=q)
 
+    context = {
+        'topics':topics,
+    }
 
-    return render(request,'pages/searchResult.html')
+    return render(request,'pages/searchResult.html',context)
+
+def deleteTopic(request,id):
+    tempTopic = Topic.objects.get(id=id)
+
+    if request.method == 'POST':
+        tempTopic.delete()
+        return redirect('http://127.0.0.1:8000/')
+    
+def deleteComment(request,id):
+    tempComment = Comment.objects.get(id=id)
+
+    if request.method == 'POST':
+        tempComment.delete()
+        link = '/konu/'+tempComment.topic.slug
+        return redirect(link)
 
 def userDetails(request,id):
     user = User.objects.get(id=id)

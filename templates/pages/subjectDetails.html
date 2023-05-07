@@ -12,11 +12,16 @@
     <!--Title-->
     <hr class="mt-5">
     <div class="d-flex justify-content-start">
-        {% if topic.titlePrefix == 'Yardım'%}
-        <h4> <span class="badge bg-danger">Yardım</span>{{topic.title}}</h4>
-        {% else %}
-        <h4> <span class="badge bg-info">Öneri</span>{{topic.title}}</h4>
-        {% endif %}
+        {% if topic.titlePrefix == 'Öneri' %}
+              <h4><div class="badge bg-info">{{topic.titlePrefix}}</div> {{topic.title}}</h4>
+              {% endif %}
+              {% if topic.titlePrefix == 'Yardım' %}
+              <h4><div class="badge bg-danger">{{topic.titlePrefix}}</div> {{topic.title}}</h4>
+              {% endif %}
+
+              {% if topic.titlePrefix == 'Kurallar' %}
+              <h4><div class="badge bg-warning">{{topic.titlePrefix}}</div> {{topic.title}}</h4>
+              {% endif %}
     </div>
     <div class="row">
         <div class="col-3">
@@ -25,8 +30,10 @@
                 {{topic.LastUpdate|naturaltime}} - {{commentCounter}} Yanıt</p>
         </div>
         {% if user.username == topic.author %}
-        <form action="" method="DELETE">
+        <form action="{% url 'deleteTopic' topic.id %}" method="POST">
+            {% csrf_token %}
             <div class="form-group mb-3">
+
                 <button type="submit" class="btn btn-danger">Sil</button>
             </div>
         </form>
@@ -34,7 +41,7 @@
     </div>
 </div>
 <!--Pagination-->
-<div class="container pagination">
+<div class="container pagination p-3">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item"><a class="page-link bg-dark text-light" href="#">Önceki</a></li>
@@ -50,10 +57,39 @@
 <div class="container rounded">
     <!--Post&Comment-->
     <div class="row">
-        <div class="col-10 text-light">
-            <div class="rounded p-3 bg-dark">
-                <p class="text-secondary mt-1">{{topic.LastUpdate|naturaltime}}</p>
-                <p class="mt-1">{{topic.subject|safe}}</p>
+        <div class="col-10 ">
+            <div class="rounded">
+                <div class="rounded p-3 bg-dark text-light">
+                    <p class="text-secondary bg-dark">{{topic.LastUpdate|naturaltime}}</p>
+                    <p class="">{{topic.subject|safe}}</p>
+                </div>
+
+                {% for comment in comments %}
+
+
+                <div class="rounded p-3 mt-3 bg-dark text-light">
+                    <div class="d-flex flex-row">
+                        <p>{{comment.user.username}} - {{comment.time|naturaltime}}
+                        
+
+                        {% if user.username == comment.user.username %}
+                        <form action="{% url 'deleteComment' comment.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <button type="submit" class="btn btn-danger">Sil</button>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                    </p>
+                    <p>{{comment.message|safe}}</p>
+
+
+                </div>
+
+
+                {% endfor %}
             </div>
             <!-- NEW Comment-->
         </div>
@@ -68,21 +104,10 @@
         </div>
     </div>
 
-    {% for comment in comments %}
+    <!--ssss-->
+    {% if topic.is_commentable %}
     <div class="row">
-        <div class="col-10 text-light mb-5">
-            <div class="rounded p-3 bg-dark">
-                
-                    <p>{{comment.user.username}} - {{comment.time|naturaltime}}</p>
-                    <p>{{comment.message|safe}}</p>
-                
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <div class="row">
-        <div class="col-10 text-light">
+        <div class="col-10 text-light mt-3">
             <div class="rounded p-3 bg-dark">
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -95,8 +120,8 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 
-    
 
     {% endblock %}
