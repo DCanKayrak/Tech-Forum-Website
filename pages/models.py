@@ -2,7 +2,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from slugify import slugify
 from django.contrib.auth.models import User
-import random
+from django.db.models import Count
 from datetime import datetime
 # Create your models here.
 
@@ -17,6 +17,8 @@ class CarouselImage(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    description = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='category')
     slug = models.SlugField(null=False,blank=True,db_index=True,editable=False,unique=True)
 
     def save(self,*args,**kwargs):
@@ -50,7 +52,6 @@ class Topic(models.Model):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super().save(*args, **kwargs)
-
 
     def __str__(self) -> str:
         return self.title

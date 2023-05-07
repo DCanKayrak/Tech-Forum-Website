@@ -27,8 +27,6 @@ def index(request):
     return render(request,'pages/index.html',context)
 
 
-
-
 @login_required
 def createSubject(request):
 
