@@ -31,8 +31,9 @@
               <li><a href="http://127.0.0.1:8000/konu/forum-kurallari" class="nav-link px-2 text-white">⚠️ Forum Kuralları</a></li>
               <li><a href="#" class="nav-link px-2 text-white">Teknoloji Haberleri</a></li>
             </ul>
-            <form action="{% url 'search' %}" method="GET" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-              <input type="search" name="q" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            <form action="{% url 'search' %}" method="POST" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              {% csrf_token %}
+              <input type="search" name="q" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search" required>
             </form>
     
             <div class="text-end">

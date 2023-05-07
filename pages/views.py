@@ -108,14 +108,20 @@ def getCategory(request,slug):
 
 def search(request):
     
-    q = request.GET['q']
-    topics = Topic.objects.filter(title=q)
+    if request.method == 'POST':
 
-    context = {
-        'topics':topics,
-    }
+        q = request.POST['q']
+        topics = Topic.objects.filter(title__contains=q).order_by('LastUpdate').reverse()
+        title = 'Arama Sonuçları : '+q
+        context = {
+            'title':title,
+            'topics':topics,
+        }
 
-    return render(request,'pages/searchResult.html',context)
+        return render(request,'pages/searchResult.html',context)
+    else:
+        context = {'title':'Aradığınız Sonuç Bulunamadı!'}
+        return render(request,'pages/searchResult.html',context)
 
 def deleteTopic(request,id):
     tempTopic = Topic.objects.get(id=id)
