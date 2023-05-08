@@ -57,7 +57,7 @@ def createSubject(request):
 def subjectDetails(request,slug):
     currentTopic = Topic.objects.get(slug=slug)
     comments = Comment.objects.filter(topic_id=currentTopic.id)
-    topics = Topic.objects.order_by('LastUpdate').reverse()
+    topics = Topic.objects.order_by('LastUpdate').reverse()[:5]
 
     #Making comments
     if request.method == 'POST':

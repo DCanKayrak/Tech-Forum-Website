@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?ur5bap');
-  src:  url('fonts/icomoon.eot?ur5bap#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?ur5bap') format('truetype'),
-    url('fonts/icomoon.woff?ur5bap') format('woff'),
-    url('fonts/icomoon.svg?ur5bap#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?jvdgnd');
+  src:  url('fonts/icomoon.eot?jvdgnd#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?jvdgnd') format('truetype'),
+    url('fonts/icomoon.woff?jvdgnd') format('woff'),
+    url('fonts/icomoon.svg?jvdgnd#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -58,14 +58,14 @@
 .icon-notifications:before {
   content: "\e90a";
 }
-.icon-save-disk:before {
-  content: "\e90b";
-}
 .icon-send:before {
   content: "\e90c";
 }
 .icon-star-full:before {
   content: "\e90d";
+}
+.icon-subdirectory-left:before {
+  content: "\e90b";
 }
 .icon-thumbs-down:before {
   content: "\e90e";
@@ -84,4 +84,14 @@
 }
 .icon-user-circle:before {
   content: "\e912";
+}
+.icon-github:before {
+  content: "\e915";
+}
+.icon-linkedin:before {
+  content: "\e914";
+  color: #0077b5;
+}
+.icon-medium:before {
+  content: "\e916";
 }
